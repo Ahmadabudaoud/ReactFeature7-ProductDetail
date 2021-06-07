@@ -1,6 +1,5 @@
 // Styling
 import { GlobalStyle, ThemeButton } from "./styles";
-import _products from "./products";
 
 import Home from "./components/Home";
 // Components
@@ -8,7 +7,7 @@ import ProductList from "./components/ProductList";
 import { ThemeProvider } from "styled-components";
 import { useState } from "react";
 import ProductDetail from "./components/ProductDetail";
-
+import products from "./products";
 const theme = {
   light: {
     mainColor: "#242424", // main font color
@@ -25,24 +24,27 @@ const theme = {
 };
 
 function App() {
-  const [products, setProducts] = useState(_products);
+  const [_products, setProducts] = useState(products);
   const deleteProduct = (productId) => {
-    const filterdProduct = products.filter(
-      (product) => product.id !== productId
-    );
-    setProducts(filterdProduct);
-    setProduct(null);
+    const newProducts = _products.filter((product) => product.id !== productId);
+    setProducts(newProducts);
   };
   const [product, setProduct] = useState(null);
 
   const setView = () => {
     if (product)
-      return <ProductDetail product={product} setProduct={setProduct} />;
+      return (
+        <ProductDetail
+          product={product}
+          setProduct={setProduct}
+          deleteProduct={deleteProduct}
+        />
+      );
     else
       return (
         <ProductList
           setProduct={setProduct}
-          products={products}
+          products={_products}
           deleteProduct={deleteProduct}
         />
       );
